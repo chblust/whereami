@@ -8,10 +8,6 @@ train_ds, val_ds = build_datasets()
 
 model = build_model()
 
-model.compile(optimizer='adam',
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-              metrics=['binary_accuracy', 'categorical_accuracy', 'accuracy'])
-
 history = model.fit(train_ds,epochs=3, validation_data=val_ds)
 
 predictions = model.predict(val_ds)
@@ -22,7 +18,7 @@ for name in val_ds.class_names:
     names += name[0:3] + ' '
 print('   ' + names)
 conf = tf.math.confusion_matrix(labels, predicted_indices)
-
+print(conf)
 tp_tn = 0
 tp_fn_fp_tn = 0
 for i in range(0,len(val_ds.class_names)):
@@ -33,4 +29,4 @@ for i in range(0,len(val_ds.class_names)):
 acc = tp_tn / tp_fn_fp_tn
 print(f"Accuracy: {acc*100:.03f}")
 
-model.save_weights("model")
+model.save('.')
