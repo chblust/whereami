@@ -8,6 +8,6 @@ train_ds, val_ds = build_datasets()
 
 model = build_model()
 
-model.fit(train_ds,epochs=3, validation_data=val_ds)
+model.fit(train_ds,epochs=1, validation_data=val_ds)
 
 model.save('.')

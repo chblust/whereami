@@ -7,7 +7,7 @@ IMAGE_WIDTH = 256
 IMAGE_HEIGHT = 144
 VAL_SPLIT = 0.2
 DATASET_DIR = "dataSet"
-BATCH_SIZE = 64
+BATCH_SIZE = 32
 
 def build_datasets():
     train_ds = tf.keras.utils.image_dataset_from_directory(
@@ -38,9 +38,9 @@ def build_model():
     # tf.keras.layers.MaxPooling2D(),
     
     # tf.keras.layers.MaxPooling2D(),
-    tf.keras.layers.Conv2D(32, (3,3), activation='relu', input_shape=(IMAGE_HEIGHT, IMAGE_WIDTH, 3)),
-    tf.keras.layers.MaxPooling2D(),
-    tf.keras.layers.Flatten(),
+    # tf.keras.layers.Conv2D(32, (10,10), activation='relu', input_shape=(IMAGE_HEIGHT, IMAGE_WIDTH, 3)),
+    # tf.keras.layers.MaxPooling2D(),
+    tf.keras.layers.Flatten( input_shape=(IMAGE_HEIGHT, IMAGE_WIDTH, 3)),
     tf.keras.layers.Dense(128, activation='relu'),
     tf.keras.layers.Dense(num_classes,activation='softmax')
     ])

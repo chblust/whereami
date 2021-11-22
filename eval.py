@@ -9,5 +9,5 @@ model = models.load_model('.')
 #               metrics=['sparse_categorical_accuracy', 'accuracy'])
 train_ds, val_ds = model_builder.build_datasets()
 
-stats= model.evaluate(train_ds)
+stats= model.evaluate(val_ds)
 print(f"Accuracy: {stats[1]:.03f}")
