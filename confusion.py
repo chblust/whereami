@@ -13,12 +13,15 @@ import matplotlib.pyplot as plt
 
 cities = ['amsterdam', 'auckland', 'beijing', 'buenos_aires', 'cairo', 'cape_town', 'hong_kong', 'lagos', 'mexico_city', 'moscow', 'new_york_city', 'perth', 'rio', 'rome', 'santiago', 'sydney', 'vancouver']
 # Load the model
-model = tf.keras.models.load_model('.')
+
 conf_matrix =  t = [ [-1]*len(cities) for i in range(len(cities))]
 
-mutex = threading.Lock()
+conf_mutex = threading.Lock()
+pred_mutex = threading.Lock()
+
 
 def conf_thread(dir, row):
+    model = tf.keras.models.load_model('.')
     paths = os.listdir(dir)
     images = []
     index_counts = [0]*len(cities)
@@ -26,18 +29,20 @@ def conf_thread(dir, row):
         image = Image.open(os.path.join(dir, path))
         image = np.expand_dims(image, axis=0)
         # images.append(image)
+        # pred_mutex.acquire()
         prediction = model.predict(image)[0]
-        
+        # pred_mutex.release()
         max_ind = np.argmax(prediction)
+        
         index_counts[max_ind] += 1   
         if i % 100 == 0:
             print(f"thread {dir} {i}/500") 
         
     print(f"Done with {dir}")
-    mutex.acquire()
+    conf_mutex.acquire()
     
     conf_matrix[row] = index_counts
-    mutex.release()
+    conf_mutex.release()
 
 
 
